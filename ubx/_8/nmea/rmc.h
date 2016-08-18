@@ -1,0 +1,45 @@
+#ifndef UBX_8_NMEA_RMC_H_
+#define UBX_8_NMEA_RMC_H_
+
+#include <ubx/_8/nmea/cardinal_direction.h>
+#include <ubx/_8/nmea/date.h>
+#include <ubx/_8/nmea/latitude.h>
+#include <ubx/_8/nmea/longitude.h>
+#include <ubx/_8/nmea/mode.h>
+#include <ubx/_8/nmea/status.h>
+#include <ubx/_8/nmea/talker.h>
+#include <ubx/_8/nmea/utc.h>
+
+#include <boost/optional.hpp>
+
+#include <cstdint>
+
+#include <vector>
+
+namespace ubx
+{
+namespace _8
+{
+namespace nmea
+{
+struct Rmc
+{
+    Talker talker;
+    boost::optional<Utc> utc;
+    boost::optional<Status> status;
+    boost::optional<Latitude> latitude;
+    boost::optional<CardinalDirection> latitude_direction;
+    boost::optional<Longitude> longitude;
+    boost::optional<CardinalDirection> longitude_direction;
+    boost::optional<float> speed_over_ground; // [knots]
+    boost::optional<float> course_over_ground; // [°]
+    boost::optional<Date> date;
+    boost::optional<float> magnetic_variation; // [°]
+    boost::optional<CardinalDirection> cardinal_direction;   
+    boost::optional<Mode> mode;
+};
+}
+}
+}
+
+#endif // UBX_8_NMEA_RMC_H_
