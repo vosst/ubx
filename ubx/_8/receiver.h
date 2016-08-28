@@ -4,6 +4,7 @@
 #include <ubx/_8/nmea/scanner.h>
 
 #include <boost/asio.hpp>
+#include <boost/filesystem.hpp>
 
 #include <array>
 
@@ -14,10 +15,10 @@ namespace _8
 /// @brief Receiver connects to a ublox 8 GNSS receiver.
 class Receiver : public std::enable_shared_from_this<Receiver>
 {
-  public:
+  public:       
     /// @brief create returns a new Receiver instance connected to the
-    /// serial port s.
-    static std::shared_ptr<Receiver> create(const std::string& s);
+    /// serial port reachable under dev.
+    static std::shared_ptr<Receiver> create(const boost::filesystem::path& dev);
 
     /// @brief run hands a thread of execution to the underlying io dispatcher.
     void run();
@@ -27,7 +28,7 @@ class Receiver : public std::enable_shared_from_this<Receiver>
     /// located at path.
     ///
     /// Throws in case of issues.
-    Receiver(const std::string& path);
+    Receiver(const boost::filesystem::path& dev);
 
     /// @brief finalize returns a finalized reader instance reading from
     /// the serial port.

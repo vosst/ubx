@@ -35,9 +35,9 @@ void print_info(boost::spirit::info const& what)
 }
 }
 
-std::shared_ptr<ubx::_8::Receiver> ubx::_8::Receiver::create(const std::string& s)
+std::shared_ptr<ubx::_8::Receiver> ubx::_8::Receiver::create(const boost::filesystem::path& dev)
 {
-    return std::shared_ptr<Receiver>{new Receiver{s}}->finalize();
+    return std::shared_ptr<Receiver>{new Receiver{dev}}->finalize();
 }
     
 void ubx::_8::Receiver::run()
@@ -45,9 +45,9 @@ void ubx::_8::Receiver::run()
     io_service.run();
 }
 
-ubx::_8::Receiver::Receiver(const std::string& path)
+ubx::_8::Receiver::Receiver(const boost::filesystem::path& dev)
         : work{io_service},
-          sp{io_service, path.c_str()}
+          sp{io_service, dev.string().c_str()}
 {
     sp.set_option(asio::serial_port::baud_rate(9600));
     ::tcflush(sp.lowest_layer().native_handle(), TCIOFLUSH);
