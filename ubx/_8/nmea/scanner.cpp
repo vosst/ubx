@@ -14,6 +14,8 @@
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #include <ubx/_8/nmea/scanner.h>
 
+#include <stdexcept>
+
 namespace nmea = ubx::_8::nmea;
 
 nmea::Scanner::Expect nmea::Scanner::update(char c)
@@ -56,7 +58,7 @@ std::string nmea::Scanner::finalize()
         throw std::runtime_error{"Incomplete"};
     
     auto result = ss.str();
-    ss = std::stringstream{};
+    ss.str(""); ss.clear();
     state = Expect::dollar;
     
     return result;

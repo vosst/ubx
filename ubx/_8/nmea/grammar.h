@@ -20,22 +20,26 @@
 
 #include <ubx/_8/nmea/sentence.h>
 
+#include <boost/fusion/adapted/struct.hpp>
+
 #include <boost/spirit/include/classic.hpp>
 #include <boost/spirit/include/qi.hpp>
 #include <boost/spirit/include/qi_real.hpp>
 #include <boost/spirit/include/qi_uint.hpp>
 
+#include <cstdint>
+
 BOOST_FUSION_ADAPT_STRUCT
 (
     ubx::_8::nmea::Latitude,
-    (std::uint32_t, degrees)
+    (uint32_t, degrees)
     (float, minutes)
 )
 
 BOOST_FUSION_ADAPT_STRUCT
 (
     ubx::_8::nmea::Longitude,
-    (std::uint32_t, degrees)
+    (uint32_t, degrees)
     (float, minutes)
 )
 
@@ -138,7 +142,7 @@ BOOST_FUSION_ADAPT_STRUCT
 BOOST_FUSION_ADAPT_STRUCT
 (
     ubx::_8::nmea::Txt,
-    (ubx::_8::nmea::Talker, talker),
+    (ubx::_8::nmea::Talker, talker)
     (boost::optional<std::uint8_t>, total_number_of_sentences)
     (boost::optional<std::uint8_t>, sequence_number)
     (boost::optional<std::uint8_t>, identifier)
