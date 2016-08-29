@@ -42,7 +42,9 @@ int main(int argc, char** argv)
     boost::filesystem::path device{argv[1]};
     boost::filesystem::path trace{argc > 2 ? argv[2] : "/tmp/trace.nmea"};
 
-    ubx::_8::SerialPortReceiver::create(boost::filesystem::path(device), std::make_shared<PrintingMonitor>(trace))->run();
+    ubx::_8::SerialPortReceiver::create(
+        boost::filesystem::path(device),
+        std::make_shared<PrintingMonitor>(trace))->run();
 
     return EXIT_SUCCESS;
 }
