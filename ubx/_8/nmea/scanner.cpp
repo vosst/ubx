@@ -20,30 +20,34 @@ nmea::Scanner::Expect nmea::Scanner::update(char c)
 {
     switch (state)
     {
-        case Expect::dollar:
-            if (c == '$')
-            {
-                ss << c;
-                state = Expect::more_data;
-            }
-            break;
-        case Expect::more_data:
-            switch (c)
-            {
-                case '\r': state = Expect::line_feed; break;
-                default: break;
-            }
+    case Expect::dollar:
+        if (c == '$')
+        {
             ss << c;
-            break;
-        case Expect::line_feed:
-            switch (c)
-            {
-                case '\n': state = Expect::nothing_more; break;
-                default: break;
-            }
-            ss << c;
-            break;
+            state = Expect::more_data;
+        }
+        break;
+    case Expect::more_data:
+        switch (c)
+        {
+        case '\r': state = Expect::line_feed; break;
+        default: break;
+        }
+        ss << c;
+        break;
+    case Expect::line_feed:
+        switch (c)
+        {
+        case '\n': state = Expect::nothing_more; break;
+        default: break;
+        }
+        ss << c;
+        break;
+    default:
+        break;
     }
+
+    throw std::logic_error{"Should not reach here"};
 }
 
 std::string nmea::Scanner::finalize()
