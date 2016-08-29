@@ -18,18 +18,13 @@
 #include <ubx/_8/nmea/scanner.h>
 #include <ubx/_8/nmea/sentence.h>
 
-#include <boost/asio.hpp>
-#include <boost/filesystem.hpp>
-
-#include <array>
-
 namespace ubx
 {
 namespace _8
 {
 
 /// @brief Receiver connects to a ublox 8 GNSS receiver.
-class Receiver : public std::enable_shared_from_this<Receiver>
+class Receiver
 {
   public:
     using Buffer = std::array<char, 1024>;
@@ -55,33 +50,23 @@ class Receiver : public std::enable_shared_from_this<Receiver>
         virtual void on_new_nmea_sentence(const nmea::Sentence& sentence) = 0;
     };
 
-    /// @brief create returns a new Receiver instance connected to the
-    /// serial port reachable under dev.
-    static std::shared_ptr<Receiver> create(const boost::filesystem::path& dev, const std::shared_ptr<Monitor>& monitor);
-
     /// @brief run hands a thread of execution to the underlying io dispatcher.
-    void run();
+    virtual void run() = 0;
 
-  private:
-    /// @brief Receiver initializes a new instance opening the serial port
-    /// located at path.
+protected:
+    /// @brief Receiver initializes a new instance with monitor
     ///
     /// Throws in case of issues.
-    Receiver(const boost::filesystem::path& dev, const std::shared_ptr<Monitor>& monitor);
+    Receiver(const std::shared_ptr<Monitor>& monitor);
 
-    /// @brief finalize returns a finalized reader instance reading from
-    /// the serial port.
-    std::shared_ptr<Receiver> finalize();
+    /// @brief process_chunk iterates over the given range, updating scanners and parsers.
+    ///
+    /// Calls out to a configured monitor instance for announcing results.
+    void process_chunk(Buffer::iterator it, Buffer::iterator itE);
 
-    /// @brief start_read starts an async read operation from the configured serial port.
-    void start_read();
-
+private:
     std::shared_ptr<Monitor> monitor;
-    Buffer buffer;
     nmea::Scanner nmea_scanner;
-    boost::asio::io_service io_service;
-    boost::asio::io_service::work work;
-    boost::asio::serial_port sp;
 };
 }
 }
