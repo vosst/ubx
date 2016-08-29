@@ -35,61 +35,35 @@ void print_info(boost::spirit::info const& what)
 }
 }
 
-std::shared_ptr<ubx::_8::Receiver> ubx::_8::Receiver::create(const boost::filesystem::path& dev, const std::shared_ptr<Monitor>& monitor)
+ubx::_8::Receiver::Receiver(const std::shared_ptr<Monitor>& monitor)
+    : monitor{monitor}
 {
-    return std::shared_ptr<Receiver>{new Receiver{dev, monitor}}->finalize();
 }
 
-void ubx::_8::Receiver::run()
+void ubx::_8::Receiver::process_chunk(Buffer::iterator it, Buffer::iterator itE)
 {
-    io_service.run();
-}
+    monitor->on_new_chunk(it, itE);
 
-ubx::_8::Receiver::Receiver(const boost::filesystem::path& dev, const std::shared_ptr<Monitor>& monitor)
-    : monitor{monitor},
-      work{io_service},
-      sp{io_service, dev.string().c_str()}
-{
-    sp.set_option(boost::asio::serial_port::baud_rate(9600));
-    ::tcflush(sp.lowest_layer().native_handle(), TCIOFLUSH);
-}
-
-std::shared_ptr<ubx::_8::Receiver> ubx::_8::Receiver::finalize()
-{
-    start_read();
-    return shared_from_this();
-}
-
-void ubx::_8::Receiver::start_read()
-{
-    auto thiz = shared_from_this();
-    boost::asio::async_read(sp, boost::asio::buffer(&buffer.front(), buffer.size()), [thiz, this](const boost::system::error_code&, std::size_t transferred) {
-        auto it = buffer.begin(); auto itE = buffer.begin() + transferred;
-        monitor->on_new_chunk(it, itE);
-
-        while (it != itE)
+    while (it != itE)
+    {
+        try
         {
-            try
+            if (nmea::Scanner::Expect::nothing_more == nmea_scanner.update(*it))
             {
-                if (nmea::Scanner::Expect::nothing_more == nmea_scanner.update(*it))
-                {
-                    auto token = nmea_scanner.finalize();
-                    nmea::Sentence sentence;
-                    if (qi::parse(token.begin(), token.end(), nmea::Grammar<std::string::iterator>(), sentence))
-                        monitor->on_new_nmea_sentence(sentence);
-                    else
-                        std::cout << "Failed to parse sentence: " << token << std::endl;
-                }
+                auto token = nmea_scanner.finalize();
+                nmea::Sentence sentence;
+                if (qi::parse(token.begin(), token.end(), nmea::Grammar<std::string::iterator>(), sentence))
+                    monitor->on_new_nmea_sentence(sentence);
+                else
+                    std::cout << "Failed to parse sentence: " << token << std::endl;
             }
-            catch (const qi::expectation_failure<std::string::iterator>& e)
-            {
-                std::cout << "expected: "; print_info(e.what_);
-                std::cout << "got: \"" << std::string(e.first, e.last) << '"' << std::endl;
-            }
-
-            ++it;
         }
-        start_read();
-    });
-}
+        catch (const qi::expectation_failure<std::string::iterator>& e)
+        {
+            std::cout << "expected: "; print_info(e.what_);
+            std::cout << "got: \"" << std::string(e.first, e.last) << '"' << std::endl;
+        }
 
+        ++it;
+    }
+}
