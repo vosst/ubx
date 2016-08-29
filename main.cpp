@@ -26,14 +26,14 @@ struct PrintingMonitor : public ubx::_8::Receiver::Monitor
         std::copy(it, itE, std::ostream_iterator<char>(std::cerr, ""));
     }
 
-    void on_new_nmea_sentence(const ubx::_8::nmea::Sentence& sentence) override
+    void on_new_nmea_sentence(const ubx::_8::nmea::Sentence&) override
     {
         std::cout << "on_new_nmea_sentence: " << std::endl;
     }
 };
 }
 
-int main(int argc, char** argv)
+int main(int, char** argv)
 {
     ubx::_8::Receiver::create(boost::filesystem::path(argv[1]), std::make_shared<PrintingMonitor>())->run();
     return 0;
