@@ -49,7 +49,7 @@ nmea::Scanner::Expect nmea::Scanner::update(char c)
         break;
     }
 
-    throw std::logic_error{"Should not reach here"};
+    return state;
 }
 
 std::string nmea::Scanner::finalize()

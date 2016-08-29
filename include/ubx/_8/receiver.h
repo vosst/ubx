@@ -32,7 +32,7 @@ namespace _8
 class Receiver : public std::enable_shared_from_this<Receiver>
 {
   public:
-    using Buffer = std::array<char, 50>;
+    using Buffer = std::array<char, 1024>;
 
     /// @brief Monitor provides calling code with means for monitoring
     /// receiver operation.
