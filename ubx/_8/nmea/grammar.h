@@ -262,9 +262,9 @@ class Grammar : public boost::spirit::qi::grammar<Iterator, Sentence()>
                 field_separator >> -boost::spirit::qi::uint_parser<std::uint8_t, 10, 2, 2>()    >>
                 field_separator >> -boost::spirit::qi::uint_parser<std::uint8_t, 10, 2, 2>()    >>
                 field_separator >> -boost::spirit::qi::uint_parser<std::uint16_t, 10, 3, 3>()   >>
-                field_separator >> -(boost::spirit::qi::uint_parser<std::uint8_t, 10, 2, 2>());
+                field_separator >> -boost::spirit::qi::uint_parser<std::uint8_t, 10, 2, 2>();
         
-        gsv %= talker >> "GSV"                                       >> field_separator
+        gsv %= talker >> "GSV"                                                      >> field_separator
                       >> -boost::spirit::qi::uint_parser<std::uint8_t, 10, 1, 1>()  >> field_separator
                       >> -boost::spirit::qi::uint_parser<std::uint8_t, 10, 1, 1>()  >> field_separator
                       >> -boost::spirit::qi::uint_parser<std::uint16_t, 10, 2, 2>()

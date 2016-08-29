@@ -12,10 +12,29 @@
 // 
 // You should have received a copy of the GNU Lesser General Public License
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
+
 #include <ubx/_8/receiver.h>
+
+#include <iostream>
+
+namespace
+{
+struct PrintingMonitor : public ubx::_8::Receiver::Monitor
+{
+    void on_new_chunk(ubx::_8::Receiver::Buffer::iterator it, ubx::_8::Receiver::Buffer::iterator itE) override
+    {
+        std::copy(it, itE, std::ostream_iterator<char>(std::cerr, ""));
+    }
+
+    void on_new_nmea_sentence(const ubx::_8::nmea::Sentence& sentence) override
+    {
+        std::cout << "on_new_nmea_sentence: " << std::endl;
+    }
+};
+}
 
 int main(int argc, char** argv)
 {
-    ubx::_8::Receiver::create(boost::filesystem::path(argv[1]))->run();
+    ubx::_8::Receiver::create(boost::filesystem::path(argv[1]), std::make_shared<PrintingMonitor>())->run();
     return 0;
 }
