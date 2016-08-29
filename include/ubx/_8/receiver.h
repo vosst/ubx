@@ -18,6 +18,8 @@
 #include <ubx/_8/nmea/scanner.h>
 #include <ubx/_8/nmea/sentence.h>
 
+#include <memory>
+
 namespace ubx
 {
 namespace _8
