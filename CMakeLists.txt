@@ -43,6 +43,7 @@ set (GMOCK_INCLUDE_DIR "/usr/include/gmock/include" CACHE PATH "gmock source inc
 set (GMOCK_SOURCE_DIR "/usr/src/gmock" CACHE PATH "gmock source directory")
 set (GTEST_INCLUDE_DIR "${GMOCK_SOURCE_DIR}/gtest/include" CACHE PATH "gtest source include directory")
 
+include_directories(${GTEST_INCLUDE_DIR})
 add_subdirectory(${GMOCK_SOURCE_DIR} "${CMAKE_CURRENT_BINARY_DIR}/gmock")
 
 add_library(
