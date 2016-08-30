@@ -34,6 +34,15 @@ namespace _8
 {
 namespace nmea
 {
+/// @brief GNSS DOP and Active Satellites.
+///
+/// The GNSS receiver operating mode, satellites used for navigation, and DOP values.
+///   - If less than 12 SVs are used for navigation, the remaining fields are left empty. If more
+///     than 12 SVs are used for navigation, only the IDs of the first 12 are output.
+///   - The SV numbers (fields 'sv') are in the range of 1 to 32 for GPS satellites, and 33 to 64
+///     for SBAS satellites (33 = SBAS PRN 120, 34 = SBAS PRN 121, and so on)
+///
+/// In a multi-GNSS system this message will be output multiple times, once for each GNSS.
 struct Gsa
 {
     enum class OperationMode

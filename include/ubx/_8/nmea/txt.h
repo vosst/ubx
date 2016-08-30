@@ -29,6 +29,10 @@ namespace _8
 {
 namespace nmea
 {
+/// @brief Text Transmission.
+///
+/// This message outputs various information on the receiver, such as power-up screen,
+/// software version etc.
 struct Txt
 {
     Talker talker;
