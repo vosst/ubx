@@ -34,7 +34,7 @@ private:
 int main(int argc, char** argv)
 {
     if (argc < 2)
-    {
+     {
         std::cout << "Usage: " << argv[0] << " /path/to/serial/device [/path/to/trace/file]" << std::endl;
         return EXIT_FAILURE;
     }
@@ -48,6 +48,16 @@ int main(int argc, char** argv)
 
     return EXIT_SUCCESS;
 }
+```
+
+# Examples
+
+Right now, accessing ublox receivers connected via a serial port is supported.
+```bash
+ubx_serial_port_receiver 
+Usage: ./ubx_serial_port_receiver /path/to/serial/device [/path/to/trace/file]
+sudo ./ubx_serial_port_receiver /dev/ttyACM1
+...
 ```
 
 # Status
