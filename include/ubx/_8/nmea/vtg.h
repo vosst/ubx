@@ -28,6 +28,9 @@ namespace _8
 {
 namespace nmea
 {
+/// @brief Course over ground and Ground speed.
+///
+/// Velocity is given as Course over Ground (COG) and Speed over Ground (SOG).
 struct Vtg
 {
     Talker talker;

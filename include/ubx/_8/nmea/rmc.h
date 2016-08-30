@@ -36,6 +36,9 @@ namespace _8
 {
 namespace nmea
 {
+/// @brief Recommended Minimum data.
+///
+/// The recommended minimum sentence defined by NMEA for GNSS system data.
 struct Rmc
 {
     Talker talker;

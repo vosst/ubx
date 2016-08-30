@@ -35,6 +35,10 @@ namespace _8
 {
 namespace nmea
 {
+/// @brief Global positioning system fix data.
+///
+/// Time and position, together with GPS fixing related data (number of satellites in use, and
+/// the resulting HDOP, age of differential data if in use, etc.).
 struct Gga
 {
     Talker talker;

@@ -29,6 +29,12 @@ namespace _8
 {
 namespace nmea
 {
+/// @brief GNSS Satellites in View.
+///
+/// The number of satellites in view, together with each SV ID, elevation azimuth, and signal
+/// strength (C/No) value. Only four satellite details are transmitted in one message.
+/// In a multi-GNSS system sets of GSV messages will be output multiple times, one
+/// set for each GNSS.
 struct Gsv
 {
     struct Info

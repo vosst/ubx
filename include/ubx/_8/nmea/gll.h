@@ -31,6 +31,7 @@ namespace _8
 {
 namespace nmea
 {
+/// @brief Latitude and longitude, with time of position fix and status
 struct Gll
 {
     Talker talker;
