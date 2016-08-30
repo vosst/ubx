@@ -25,11 +25,11 @@ add_library(
 target_link_libraries(ubx ${Boost_LIBRARIES})
 
 add_executable(
-  ubx_receiver
+  ubx_serial_port_receiver
 
-  main.cpp)
+  examples/ubx_serial_port_receiver.cpp)
 
-target_link_libraries(ubx_receiver ubx)
+target_link_libraries(ubx_serial_port_receiver ubx)
 
 ############################
 ## Test setup starts here ##
