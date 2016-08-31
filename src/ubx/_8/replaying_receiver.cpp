@@ -19,6 +19,12 @@ void ubx::_8::ReplayingReceiver::run()
     }
 }
 
+void ubx::_8::ReplayingReceiver::stop()
+{
+    if (in)
+        in.close();
+}
+
 ubx::_8::ReplayingReceiver::ReplayingReceiver(const boost::filesystem::path& trace, const std::shared_ptr<Monitor>& monitor)
     : Receiver{monitor},
       in{trace.string().c_str()}

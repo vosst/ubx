@@ -34,8 +34,9 @@ class ReplayingReceiver : public Receiver, public std::enable_shared_from_this<R
     /// @brief create returns a new Receiver instance replaying the nmea trace in trace.
     static std::shared_ptr<Receiver> create(const boost::filesystem::path& trace, const std::shared_ptr<Receiver::Monitor>& monitor);
 
-    /// @brief run hands a thread of execution to the underlying io dispatcher.
+    // From Receiver
     void run() override;
+    void stop() override;
 
   private:
     /// @brief create returns a new Receiver instance replaying the nmea trace in trace.
