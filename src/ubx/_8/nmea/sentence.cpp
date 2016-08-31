@@ -15,7 +15,6 @@
 
 #include <ubx/_8/nmea/sentence.h>
 
-std::ostream& ubx::_8::nmea::operator<<(std::ostream& out, const Sentence&)
-{
-    return out;
+std::ostream& ubx::_8::nmea::operator<<(std::ostream& out, const Sentence&) {
+  return out;
 }

@@ -22,43 +22,47 @@
 
 #include <array>
 
-namespace ubx
-{
-namespace _8
-{
+namespace ubx {
+namespace _8 {
 
-/// @brief SerialPortReceiver connects to a ublox 8 GNSS receiver over a serial port.
-class SerialPortReceiver : public Receiver, public std::enable_shared_from_this<SerialPortReceiver>
-{
-  public:
-    /// @brief create returns a new Receiver instance connected to the
-    /// serial port reachable under dev.
-    static std::shared_ptr<Receiver> create(const boost::filesystem::path& dev, const std::shared_ptr<Receiver::Monitor>& monitor);
+/// @brief SerialPortReceiver connects to a ublox 8 GNSS receiver over a serial
+/// port.
+class SerialPortReceiver
+    : public Receiver,
+      public std::enable_shared_from_this<SerialPortReceiver> {
+ public:
+  /// @brief create returns a new Receiver instance connected to the
+  /// serial port reachable under dev.
+  static std::shared_ptr<Receiver> create(
+      const boost::filesystem::path& dev,
+      const std::shared_ptr<Receiver::Monitor>& monitor);
 
-    // From Receiver.
-    void run() override;
-    void stop() override;
+  // From Receiver.
+  void run() override;
+  void stop() override;
 
-  private:
-    /// @brief Receiver initializes a new instance opening the serial port
-    /// located at path.
-    ///
-    /// Throws in case of issues.
-    SerialPortReceiver(const boost::filesystem::path& dev, const std::shared_ptr<Receiver::Monitor>& monitor);
+ private:
+  /// @brief Receiver initializes a new instance opening the serial port
+  /// located at path.
+  ///
+  /// Throws in case of issues.
+  SerialPortReceiver(const boost::filesystem::path& dev,
+                     const std::shared_ptr<Receiver::Monitor>& monitor);
 
-    /// @brief finalize returns a finalized reader instance reading from
-    /// the serial port.
-    std::shared_ptr<SerialPortReceiver> finalize();
+  /// @brief finalize returns a finalized reader instance reading from
+  /// the serial port.
+  std::shared_ptr<SerialPortReceiver> finalize();
 
-    /// @brief start_read starts an async read operation from the configured serial port.
-    void start_read();
+  /// @brief start_read starts an async read operation from the configured
+  /// serial port.
+  void start_read();
 
-    Receiver::Buffer buffer;
-    boost::asio::io_service io_service;
-    boost::asio::io_service::work work;
-    boost::asio::serial_port sp;
+  Receiver::Buffer buffer;
+  boost::asio::io_service io_service;
+  boost::asio::io_service::work work;
+  boost::asio::serial_port sp;
 };
 }
 }
 
-#endif // UBX_8_SERIAL_PORT_RECEIVER_H_
+#endif  // UBX_8_SERIAL_PORT_RECEIVER_H_

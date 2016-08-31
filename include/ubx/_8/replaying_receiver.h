@@ -22,32 +22,36 @@
 #include <array>
 #include <fstream>
 
-namespace ubx
-{
-namespace _8
-{
+namespace ubx {
+namespace _8 {
 
 /// @brief Replaying replays a pre-recorded nmea trace.
-class ReplayingReceiver : public Receiver, public std::enable_shared_from_this<ReplayingReceiver>
-{
-  public:
-    /// @brief create returns a new Receiver instance replaying the nmea trace in trace.
-    static std::shared_ptr<Receiver> create(const boost::filesystem::path& trace, const std::shared_ptr<Receiver::Monitor>& monitor);
+class ReplayingReceiver
+    : public Receiver,
+      public std::enable_shared_from_this<ReplayingReceiver> {
+ public:
+  /// @brief create returns a new Receiver instance replaying the nmea trace in
+  /// trace.
+  static std::shared_ptr<Receiver> create(
+      const boost::filesystem::path& trace,
+      const std::shared_ptr<Receiver::Monitor>& monitor);
 
-    // From Receiver
-    void run() override;
-    void stop() override;
+  // From Receiver
+  void run() override;
+  void stop() override;
 
-  private:
-    /// @brief create returns a new Receiver instance replaying the nmea trace in trace.
-    ///
-    /// Throws in case of issues.
-    ReplayingReceiver(const boost::filesystem::path& trace, const std::shared_ptr<Receiver::Monitor>& monitor);
+ private:
+  /// @brief create returns a new Receiver instance replaying the nmea trace in
+  /// trace.
+  ///
+  /// Throws in case of issues.
+  ReplayingReceiver(const boost::filesystem::path& trace,
+                    const std::shared_ptr<Receiver::Monitor>& monitor);
 
-    Receiver::Buffer buffer;
-    std::ifstream in;
+  Receiver::Buffer buffer;
+  std::ifstream in;
 };
 }
 }
 
-#endif // UBX_8_REPLAYING_RECEIVER_H_
+#endif  // UBX_8_REPLAYING_RECEIVER_H_
