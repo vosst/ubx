@@ -10,7 +10,7 @@ find_program(
   clang-format NAMES clang-format-3.6 clang-format-3.7)
 
 if (CLANG_FORMAT)
-  file(GLOB_RECURSE SRCS include/*.h tests/*.h tests/*.cpp src/*.h src/*.cpp )
+  file(GLOB_RECURSE SRCS include/*.h examples/*.h examples/*.cpp tests/*.h tests/*.cpp src/*.h src/*.cpp )
   add_custom_target(clang-format ${CLANG_FORMAT} -style=file -i ${SRCS} VERBATIM)
 endif()
 
