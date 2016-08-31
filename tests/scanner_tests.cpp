@@ -17,37 +17,36 @@
 
 #include <gtest/gtest.h>
 
-TEST(NmeaScanner, ctor_and_dtor_work)
-{
-    ubx::_8::nmea::Scanner scanner;
+TEST(NmeaScanner, ctor_and_dtor_work) {
+  ubx::_8::nmea::Scanner scanner;
 }
 
-TEST(NmeaScanner, initial_state_is_wait_for_dollar)
-{
-    ubx::_8::nmea::Scanner scanner;
-    EXPECT_EQ(ubx::_8::nmea::Scanner::Expect::dollar, scanner.update('*'));
+TEST(NmeaScanner, initial_state_is_wait_for_dollar) {
+  ubx::_8::nmea::Scanner scanner;
+  EXPECT_EQ(ubx::_8::nmea::Scanner::Expect::dollar, scanner.update('*'));
 }
 
-TEST(NmeaScanner, throws_if_finalized_for_incomplete_data)
-{
-    EXPECT_ANY_THROW(ubx::_8::nmea::Scanner scanner; scanner.finalize(););
-    EXPECT_ANY_THROW(ubx::_8::nmea::Scanner scanner; scanner.update('$'); scanner.finalize(););
-    EXPECT_ANY_THROW(ubx::_8::nmea::Scanner scanner; scanner.update('$'); scanner.update('1'); scanner.finalize(););
-    EXPECT_ANY_THROW(ubx::_8::nmea::Scanner scanner; scanner.update('$'); scanner.update('\r'); scanner.finalize(););
+TEST(NmeaScanner, throws_if_finalized_for_incomplete_data) {
+  EXPECT_ANY_THROW(ubx::_8::nmea::Scanner scanner; scanner.finalize(););
+  EXPECT_ANY_THROW(ubx::_8::nmea::Scanner scanner; scanner.update('$');
+                   scanner.finalize(););
+  EXPECT_ANY_THROW(ubx::_8::nmea::Scanner scanner; scanner.update('$');
+                   scanner.update('1'); scanner.finalize(););
+  EXPECT_ANY_THROW(ubx::_8::nmea::Scanner scanner; scanner.update('$');
+                   scanner.update('\r'); scanner.finalize(););
 }
 
-TEST(NmeaScanner, returns_accumulated_data_when_finalized)
-{
-    ubx::_8::nmea::Scanner scanner;
-    scanner.update('$');
-    scanner.update('1');
-    scanner.update('2');
-    scanner.update('3');
-    scanner.update('4');
-    scanner.update('5');
-    scanner.update('6');
-    scanner.update('\r');
-    scanner.update('\n');
+TEST(NmeaScanner, returns_accumulated_data_when_finalized) {
+  ubx::_8::nmea::Scanner scanner;
+  scanner.update('$');
+  scanner.update('1');
+  scanner.update('2');
+  scanner.update('3');
+  scanner.update('4');
+  scanner.update('5');
+  scanner.update('6');
+  scanner.update('\r');
+  scanner.update('\n');
 
-    EXPECT_EQ("$123456\r\n", scanner.finalize());
+  EXPECT_EQ("$123456\r\n", scanner.finalize());
 }

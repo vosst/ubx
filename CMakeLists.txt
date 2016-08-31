@@ -5,6 +5,15 @@ set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++11 -Wall -fno-strict-aliasing -p
 
 include(CTest)
 
+find_program(
+  CLANG_FORMAT 
+  clang-format NAMES clang-format-3.6 clang-format-3.7)
+
+if (CLANG_FORMAT)
+  file(GLOB_RECURSE SRCS include/*.h tests/*.h tests/*.cpp src/*.h src/*.cpp )
+  add_custom_target(clang-format ${CLANG_FORMAT} -style=file -i ${SRCS} VERBATIM)
+endif()
+
 find_package(Boost COMPONENTS filesystem system)
 
 include_directories(include src)

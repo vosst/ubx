@@ -15,8 +15,7 @@
 
 #include <boost/filesystem.hpp>
 
-namespace testing
-{
+namespace testing {
 /// @brief trace_dir returns the directory containing pre-recorded traces.
 boost::filesystem::path trace_dir();
 }
