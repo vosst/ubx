@@ -12,6 +12,11 @@ void ubx::_8::SerialPortReceiver::run()
     io_service.run();
 }
 
+void ubx::_8::SerialPortReceiver::stop()
+{
+    io_service.stop();
+}
+
 ubx::_8::SerialPortReceiver::SerialPortReceiver(const boost::filesystem::path& dev, const std::shared_ptr<Monitor>& monitor)
     : Receiver{monitor},
       work{io_service},

@@ -35,8 +35,9 @@ class SerialPortReceiver : public Receiver, public std::enable_shared_from_this<
     /// serial port reachable under dev.
     static std::shared_ptr<Receiver> create(const boost::filesystem::path& dev, const std::shared_ptr<Receiver::Monitor>& monitor);
 
-    /// @brief run hands a thread of execution to the underlying io dispatcher.
+    // From Receiver.
     void run() override;
+    void stop() override;
 
   private:
     /// @brief Receiver initializes a new instance opening the serial port
