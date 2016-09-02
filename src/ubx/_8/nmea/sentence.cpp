@@ -16,8 +16,6 @@
 #include <ubx/_8/nmea/generator.h>
 #include <ubx/_8/nmea/grammar.h>
 
-#include <boost/phoenix.hpp>
-
 #include <iterator>
 
 namespace nmea = ubx::_8::nmea;
@@ -44,10 +42,18 @@ nmea::Sentence nmea::parse_sentence(const std::string& message) {
   std::string s;
   std::uint32_t cs;
 
+  auto set_s = [&s](const std::string& in) {
+    s = in;
+  };
+
+  auto set_cs = [&cs](std::uint32_t in) {
+    cs = in;
+  };
+
   if (not boost::spirit::qi::parse(
           message.begin(), message.end(),
-          (lit('$') >> as_string[*(~char_('*'))][boost::phoenix::ref(s) = _1] >>
-           lit('*') >> hex[ref(cs) = _1] >> "\r\n")))
+          (lit('$') >> as_string[*(~char_('*'))][set_s] >>
+           lit('*') >> hex[set_cs] >> "\r\n")))
     throw std::runtime_error("Failed to unmarshal NMEA message: " + message);
 
   nmea::Sentence sentence;
