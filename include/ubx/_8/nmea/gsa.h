@@ -60,7 +60,7 @@ struct Gsa {
   Talker talker;
   boost::optional<OperationMode> operation_mode;
   boost::optional<FixMode> fix_mode;
-  boost::optional<std::vector<boost::optional<std::uint8_t>>> satellite_ids;
+  std::vector<boost::optional<std::uint8_t>> satellite_ids;
   boost::optional<Dop<tag::Positional>> pdop;
   boost::optional<Dop<tag::Horizontal>> hdop;
   boost::optional<Dop<tag::Vertical>> vdop;

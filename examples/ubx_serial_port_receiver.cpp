@@ -26,11 +26,11 @@ class PrintingMonitor : public ubx::_8::Receiver::Monitor {
 
   void on_new_chunk(ubx::_8::Receiver::Buffer::iterator it,
                     ubx::_8::Receiver::Buffer::iterator itE) override {
-    std::copy(it, itE, std::ostream_iterator<char>(out, ""));
+    std::copy(it, itE, std::ostream_iterator<char>(out, "")); out << std::flush;
   }
 
-  void on_new_nmea_sentence(const ubx::_8::nmea::Sentence&) override {
-    std::cout << "on_new_nmea_sentence: " << std::endl;
+  void on_new_nmea_sentence(const ubx::_8::nmea::Sentence& sentence) override {
+    std::cout << "on_new_nmea_sentence: " << sentence;
   }
 
  private:

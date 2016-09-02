@@ -46,7 +46,7 @@ struct Gsv {
   boost::optional<std::uint8_t> sentence_count;
   boost::optional<std::uint8_t> sentence_number;
   boost::optional<std::uint8_t> satellites_count;
-  boost::optional<std::vector<Info>> satellites_info;
+  std::vector<Info> satellites_info;
 };
 }
 }

@@ -24,7 +24,7 @@ namespace nmea {
 struct Utc {
   std::uint8_t hours;
   std::uint8_t minutes;
-  float seconds;
+  double seconds;
 };
 }
 }

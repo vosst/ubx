@@ -18,12 +18,12 @@ find_package(Boost COMPONENTS filesystem system)
 
 include_directories(include src)
 
-file(GLOB_RECURSE UBX_PUBLIC_INCLUDES include/*.h tests/*.h)
+file(GLOB_RECURSE UBX_HEADERS include/*.h src/*.h tests/*.h)
 
 add_library(
   ubx
 
-  ${UBX_PUBLIC_INCLUDES}
+  ${UBX_HEADERS}
 
   src/ubx/_8/receiver.cpp
   src/ubx/_8/replaying_receiver.cpp
