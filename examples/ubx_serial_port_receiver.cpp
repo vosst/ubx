@@ -46,12 +46,23 @@ int main(int argc, char** argv) {
     return EXIT_FAILURE;
   }
 
+  boost::asio::io_service ios;
+  boost::asio::io_service::work ka{ios};
+
+  boost::asio::signal_set ss(ios, SIGINT, SIGQUIT);
+  ss.async_wait([&](const boost::system::error_code& ec, int) {
+    if (not ec)
+      ios.stop();
+  });
+
   boost::filesystem::path device{argv[1]};
   boost::filesystem::path trace{argc > 2 ? argv[2] : "/tmp/trace.nmea"};
 
-  ubx::_8::SerialPortReceiver::create(boost::filesystem::path(device),
+  ubx::_8::SerialPortReceiver::create(ios, boost::filesystem::path(device),
                                       std::make_shared<PrintingMonitor>(trace))
-      ->run();
+      ->start();
+
+  ios.run();
 
   return EXIT_SUCCESS;
 }

@@ -33,20 +33,21 @@ class SerialPortReceiver
  public:
   /// @brief create returns a new Receiver instance connected to the
   /// serial port reachable under dev.
-  static std::shared_ptr<Receiver> create(
+  static std::shared_ptr<SerialPortReceiver> create(
+      boost::asio::io_service& ios,
       const boost::filesystem::path& dev,
       const std::shared_ptr<Receiver::Monitor>& monitor);
 
-  // From Receiver.
-  void run() override;
-  void stop() override;
+  void start();
+  void stop();
 
  private:
   /// @brief Receiver initializes a new instance opening the serial port
   /// located at path.
   ///
   /// Throws in case of issues.
-  SerialPortReceiver(const boost::filesystem::path& dev,
+  SerialPortReceiver(boost::asio::io_service& ios,
+                     const boost::filesystem::path& dev,
                      const std::shared_ptr<Receiver::Monitor>& monitor);
 
   /// @brief finalize returns a finalized reader instance reading from
@@ -58,8 +59,7 @@ class SerialPortReceiver
   void start_read();
 
   Receiver::Buffer buffer;
-  boost::asio::io_service io_service;
-  boost::asio::io_service::work work;
+  boost::asio::io_service& ios;
   boost::asio::serial_port sp;
 };
 }

@@ -2,7 +2,7 @@
 
 #include <iostream>
 
-std::shared_ptr<ubx::_8::Receiver> ubx::_8::ReplayingReceiver::create(
+std::shared_ptr<ubx::_8::ReplayingReceiver> ubx::_8::ReplayingReceiver::create(
     const boost::filesystem::path& trace,
     const std::shared_ptr<Monitor>& monitor) {
   return std::shared_ptr<ReplayingReceiver>{
@@ -17,11 +17,6 @@ void ubx::_8::ReplayingReceiver::run() {
     else
       break;
   }
-}
-
-void ubx::_8::ReplayingReceiver::stop() {
-  if (in)
-    in.close();
 }
 
 ubx::_8::ReplayingReceiver::ReplayingReceiver(

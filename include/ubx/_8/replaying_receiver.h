@@ -32,13 +32,12 @@ class ReplayingReceiver
  public:
   /// @brief create returns a new Receiver instance replaying the nmea trace in
   /// trace.
-  static std::shared_ptr<Receiver> create(
+  static std::shared_ptr<ReplayingReceiver> create(
       const boost::filesystem::path& trace,
       const std::shared_ptr<Receiver::Monitor>& monitor);
 
   // From Receiver
-  void run() override;
-  void stop() override;
+  void run();
 
  private:
   /// @brief create returns a new Receiver instance replaying the nmea trace in

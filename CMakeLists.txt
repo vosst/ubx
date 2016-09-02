@@ -15,6 +15,7 @@ if (CLANG_FORMAT)
 endif()
 
 find_package(Boost COMPONENTS filesystem system)
+find_package(Threads)
 
 include_directories(include src)
 
@@ -31,7 +32,11 @@ add_library(
   src/ubx/_8/nmea/scanner.cpp
   src/ubx/_8/nmea/sentence.cpp)
 
-target_link_libraries(ubx ${Boost_LIBRARIES})
+target_link_libraries(
+  ubx
+
+  ${Boost_LIBRARIES}
+  ${CMAKE_THREAD_LIBS_INIT})
 
 add_executable(
   ubx_serial_port_receiver

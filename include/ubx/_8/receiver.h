@@ -49,13 +49,6 @@ class Receiver {
     virtual void on_new_nmea_sentence(const nmea::Sentence& sentence) = 0;
   };
 
-  /// @brief run hands a thread of execution to the underlying io dispatcher.
-  virtual void run() = 0;
-
-  /// @brief stop requests a Receiver instance to shut down and return from run
-  /// invocations.
-  virtual void stop() = 0;
-
  protected:
   /// @brief Receiver initializes a new instance with monitor
   ///
