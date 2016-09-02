@@ -16,10 +16,11 @@ class PrintingMonitor : public ubx::_8::Receiver::Monitor {
   void on_new_chunk(ubx::_8::Receiver::Buffer::iterator it,
                     ubx::_8::Receiver::Buffer::iterator itE) override {
     std::copy(it, itE, std::ostream_iterator<char>(out, ""));
+    out << std::flush;
   }
 
-  void on_new_nmea_sentence(const ubx::_8::nmea::Sentence&) override {
-    std::cout << "on_new_nmea_sentence: " << std::endl;
+  void on_new_nmea_sentence(const ubx::_8::nmea::Sentence& sentence) override {
+    std::cout << "on_new_nmea_sentence: " << sentence;
   }
 
  private:
@@ -34,12 +35,23 @@ int main(int argc, char** argv) {
     return EXIT_FAILURE;
   }
 
+  boost::asio::io_service ios;
+  boost::asio::io_service::work ka{ios};
+
+  boost::asio::signal_set ss(ios, SIGINT, SIGQUIT);
+  ss.async_wait([&](const boost::system::error_code& ec, int) {
+    if (not ec)
+      ios.stop();
+  });
+
   boost::filesystem::path device{argv[1]};
   boost::filesystem::path trace{argc > 2 ? argv[2] : "/tmp/trace.nmea"};
 
-  ubx::_8::SerialPortReceiver::create(boost::filesystem::path(device),
+  ubx::_8::SerialPortReceiver::create(ios, boost::filesystem::path(device),
                                       std::make_shared<PrintingMonitor>(trace))
-      ->run();
+      ->start();
+
+  ios.run();
 
   return EXIT_SUCCESS;
 }

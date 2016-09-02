@@ -42,18 +42,14 @@ nmea::Sentence nmea::parse_sentence(const std::string& message) {
   std::string s;
   std::uint32_t cs;
 
-  auto set_s = [&s](const std::string& in) {
-    s = in;
-  };
+  auto set_s = [&s](const std::string& in) { s = in; };
 
-  auto set_cs = [&cs](std::uint32_t in) {
-    cs = in;
-  };
+  auto set_cs = [&cs](std::uint32_t in) { cs = in; };
 
   if (not boost::spirit::qi::parse(
           message.begin(), message.end(),
-          (lit('$') >> as_string[*(~char_('*'))][set_s] >>
-           lit('*') >> hex[set_cs] >> "\r\n")))
+          (lit('$') >> as_string[*(~char_('*'))][set_s] >> lit('*') >>
+           hex[set_cs] >> "\r\n")))
     throw std::runtime_error("Failed to unmarshal NMEA message: " + message);
 
   nmea::Sentence sentence;
