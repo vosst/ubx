@@ -30,11 +30,14 @@
 namespace ubx {
 namespace _8 {
 namespace nmea {
-/// @brief All known nmea sentences should go here.
-///
-/// NOTE: Expand at the end.
-typedef boost::variant<Gga, Gsa, Gll, Gsv, Rmc, Txt, Vtg> Sentence;
 
+/// @brief Sentence bundles together all known NMEA sentences.
+using Sentence = boost::variant<Gga, Gsa, Gll, Gsv, Rmc, Txt, Vtg>;
+
+/// @brief parse_sentence parses an NMEA sentence from s.
+Sentence parse_sentence(const std::string& s);
+/// @brief generate_sentence creates a string representation from sentence.
+std::string generate_sentence(const Sentence& sentence);
 /// @brief operator<< inserts sentence into out.
 std::ostream& operator<<(std::ostream& out, const Sentence& sentence);
 }

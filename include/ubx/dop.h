@@ -32,6 +32,8 @@ struct DillusionOfPrecision {
     return *this;
   }
 
+  operator float() const { return value; }
+
   float value;
 };
 

@@ -23,7 +23,7 @@ namespace nmea {
 /// @brief Latitude as defined in wgs84.
 struct Latitude {
   std::uint32_t degrees;
-  float minutes;
+  double minutes;
 };
 }
 }
