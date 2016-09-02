@@ -40,7 +40,6 @@ Sentence parse_sentence(const std::string& s);
 std::string generate_sentence(const Sentence& sentence);
 /// @brief operator<< inserts sentence into out.
 std::ostream& operator<<(std::ostream& out, const Sentence& sentence);
-
 }
 }
 }

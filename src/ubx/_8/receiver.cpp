@@ -12,9 +12,10 @@ void ubx::_8::Receiver::process_chunk(Buffer::iterator it,
   monitor->on_new_chunk(it, itE);
 
   while (it != itE) {
-      if (nmea::Scanner::Expect::nothing_more == nmea_scanner.update(*it)) {
-          monitor->on_new_nmea_sentence(nmea::parse_sentence(nmea_scanner.finalize()));
-      }
-      ++it;
+    if (nmea::Scanner::Expect::nothing_more == nmea_scanner.update(*it)) {
+      monitor->on_new_nmea_sentence(
+          nmea::parse_sentence(nmea_scanner.finalize()));
+    }
+    ++it;
   }
 }

@@ -35,10 +35,10 @@ namespace nmea {
 
 template <unsigned prec, typename T>
 struct FinitePrecisionPolicy : boost::spirit::karma::real_policies<T> {
-    static int floatfield(T) { return boost::spirit::karma::real_policies<T>::fmtflags::fixed; }
-    static unsigned precision(T) {
-      return prec;
-    }
+  static int floatfield(T) {
+    return boost::spirit::karma::real_policies<T>::fmtflags::fixed;
+  }
+  static unsigned precision(T) { return prec; }
 };
 
 template <typename Iterator>
@@ -192,7 +192,7 @@ class Generator : public boost::spirit::karma::grammar<Iterator, Sentence()> {
     // clang-format on
   }
 
-private:
+ private:
   boost::spirit::karma::rule<Iterator, Sentence()> start;
   boost::spirit::karma::rule<Iterator> field_separator;
   boost::spirit::karma::rule<Iterator, std::uint32_t()> checksum;
@@ -234,7 +234,6 @@ private:
     boost::spirit::karma::symbols<Gsa::FixMode, char> fix_mode;
   } for_gsa;
 };
-
 }
 }
 }
