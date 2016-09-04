@@ -22,9 +22,7 @@
 
 namespace {
 struct MockMonitor : public ubx::_8::Receiver::Monitor {
-  MOCK_METHOD2(on_new_chunk,
-               void(ubx::_8::Receiver::Buffer::iterator,
-                    ubx::_8::Receiver::Buffer::iterator));
+  MOCK_METHOD2(on_new_chunk, void(ubx::_8::Receiver::Buffer::iterator, ubx::_8::Receiver::Buffer::iterator));
   MOCK_METHOD1(on_new_nmea_sentence, void(const ubx::_8::nmea::Sentence&));
 };
 }
@@ -34,8 +32,7 @@ TEST(Receiver, handles_precorded_traces_correctly) {
 
   auto monitor = std::make_shared<NiceMock<MockMonitor>>();
   EXPECT_CALL(*monitor, on_new_nmea_sentence(_)).Times(AtLeast(1));
-  auto receiver = ubx::_8::ReplayingReceiver::create(
-      testing::trace_dir() / "trace.nmea", monitor);
+  auto receiver = ubx::_8::ReplayingReceiver::create(testing::trace_dir() / "trace.nmea", monitor);
 
   EXPECT_NO_THROW(receiver->run());
 }

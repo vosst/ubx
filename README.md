@@ -10,11 +10,9 @@ C++ library and simple tooling to access ublox chipsets.
 namespace {
 class PrintingMonitor : public ubx::_8::Receiver::Monitor {
  public:
-  PrintingMonitor(const boost::filesystem::path& trace)
-      : out{trace.string().c_str()} {}
+  PrintingMonitor(const boost::filesystem::path& trace) : out{trace.string().c_str()} {}
 
-  void on_new_chunk(ubx::_8::Receiver::Buffer::iterator it,
-                    ubx::_8::Receiver::Buffer::iterator itE) override {
+  void on_new_chunk(ubx::_8::Receiver::Buffer::iterator it, ubx::_8::Receiver::Buffer::iterator itE) override {
     std::copy(it, itE, std::ostream_iterator<char>(out, ""));
     out << std::flush;
   }
@@ -30,8 +28,7 @@ class PrintingMonitor : public ubx::_8::Receiver::Monitor {
 
 int main(int argc, char** argv) {
   if (argc < 2) {
-    std::cout << "Usage: " << argv[0]
-              << " /path/to/serial/device [/path/to/trace/file]" << std::endl;
+    std::cout << "Usage: " << argv[0] << " /path/to/serial/device [/path/to/trace/file]" << std::endl;
     return EXIT_FAILURE;
   }
 
@@ -40,15 +37,13 @@ int main(int argc, char** argv) {
 
   boost::asio::signal_set ss(ios, SIGINT, SIGQUIT);
   ss.async_wait([&](const boost::system::error_code& ec, int) {
-    if (not ec)
-      ios.stop();
+    if (not ec) ios.stop();
   });
 
   boost::filesystem::path device{argv[1]};
   boost::filesystem::path trace{argc > 2 ? argv[2] : "/tmp/trace.nmea"};
 
-  ubx::_8::SerialPortReceiver::create(ios, boost::filesystem::path(device),
-                                      std::make_shared<PrintingMonitor>(trace))
+  ubx::_8::SerialPortReceiver::create(ios, boost::filesystem::path(device), std::make_shared<PrintingMonitor>(trace))
       ->start();
 
   ios.run();

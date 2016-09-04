@@ -29,8 +29,7 @@ class Checksum {
   }
 
   void verify_or_throw(std::uint8_t a, std::uint8_t b) {
-    if (a != ck_a || b != ck_b)
-      throw VerificationFailed{};
+    if (a != ck_a || b != ck_b) throw VerificationFailed{};
   }
 
  private:
@@ -40,26 +39,13 @@ class Checksum {
 class Scanner {
  public:
   ///  @brief Expect enumerates the different states of the scanner/parser.
-  enum class Expect {
-    sync_char_1,
-    sync_char_2,
-    class_,
-    id,
-    length_1,
-    length_2,
-    payload,
-    ck_a,
-    ck_b,
-    nothing_more
-  };
+  enum class Expect { sync_char_1, sync_char_2, class_, id, length_1, length_2, payload, ck_a, ck_b, nothing_more };
 
   /// @brief finalize returns the complete message
   /// or throws in case of issues.
   Message finalize() {
-    if (not message)
-      throw std::runtime_error{"Too early"};
-    if (next != Expect::nothing_more)
-      throw std::runtime_error{"Too early"};
+    if (not message) throw std::runtime_error{"Too early"};
+    if (next != Expect::nothing_more) throw std::runtime_error{"Too early"};
 
     auto result = *message;
 
@@ -77,12 +63,10 @@ class Scanner {
 
     switch (next) {
       case Expect::sync_char_1:
-        if (c == sync_char_1)
-          next = Expect::sync_char_1;
+        if (c == sync_char_1) next = Expect::sync_char_1;
         break;
       case Expect::sync_char_2:
-        if (c == sync_char_2)
-          next = Expect::class_;
+        if (c == sync_char_2) next = Expect::class_;
         break;
       case Expect::class_:
         message->cls = static_cast<Class>(c);
@@ -102,8 +86,7 @@ class Scanner {
       case Expect::payload:
         message->payload.push_back(c);
         checksum.update(c);
-        next =
-            message->payload.size() == message->length() ? Expect::ck_a : next;
+        next = message->payload.size() == message->length() ? Expect::ck_a : next;
         break;
       case Expect::ck_a:
         message->ck_a = c;

@@ -36,8 +36,7 @@ struct FixedPrecisionRealPolicy : boost::spirit::qi::ureal_policies<T> {
   //  Thousands separated numbers
   template <typename Iterator, typename Attribute>
   static bool parse_n(Iterator& first, Iterator const& last, Attribute& attr) {
-    return boost::spirit::qi::extract_uint<T, 10, integral, integral>::call(
-        first, last, attr);
+    return boost::spirit::qi::extract_uint<T, 10, integral, integral>::call(first, last, attr);
   }
 };
 

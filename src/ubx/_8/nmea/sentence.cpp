@@ -24,8 +24,7 @@ namespace {
 template <typename Iterator>
 std::uint8_t checksum(Iterator it, Iterator itE) {
   std::uint8_t result = 0;
-  for (; it != itE; ++it)
-    result ^= *it;
+  for (; it != itE; ++it) result ^= *it;
 
   return result;
 }
@@ -46,19 +45,15 @@ nmea::Sentence nmea::parse_sentence(const std::string& message) {
 
   auto set_cs = [&cs](std::uint32_t in) { cs = in; };
 
-  if (not boost::spirit::qi::parse(
-          message.begin(), message.end(),
-          (lit('$') >> as_string[*(~char_('*'))][set_s] >> lit('*') >>
-           hex[set_cs] >> "\r\n")))
+  if (not boost::spirit::qi::parse(message.begin(), message.end(),
+                                   (lit('$') >> as_string[*(~char_('*'))][set_s] >> lit('*') >> hex[set_cs] >> "\r\n")))
     throw std::runtime_error("Failed to unmarshal NMEA message: " + message);
 
   nmea::Sentence sentence;
-  if (not boost::spirit::qi::parse(
-          s.begin(), s.end(), nmea::Grammar<std::string::iterator>(), sentence))
+  if (not boost::spirit::qi::parse(s.begin(), s.end(), nmea::Grammar<std::string::iterator>(), sentence))
     throw std::runtime_error("Failed to parse NMEA sentence: " + s);
 
-  if (checksum(s.begin(), s.end()) != cs)
-    throw std::runtime_error("Failed to verify NMEA message integrity.");
+  if (checksum(s.begin(), s.end()) != cs) throw std::runtime_error("Failed to verify NMEA message integrity.");
 
   return sentence;
 }
@@ -70,13 +65,11 @@ std::string nmea::generate_sentence(const Sentence& sentence) {
 
   std::string s;
   std::back_insert_iterator<std::string> its(s);
-  boost::spirit::karma::generate(
-      its, Generator<std::back_insert_iterator<std::string>>(), sentence);
+  boost::spirit::karma::generate(its, Generator<std::back_insert_iterator<std::string>>(), sentence);
 
   std::string result;
   std::back_insert_iterator<std::string> itr(result);
-  if (not boost::spirit::karma::generate(itr, lit('$') << s << lit('*')
-                                                       << upper[hex] << "\r\n",
+  if (not boost::spirit::karma::generate(itr, lit('$') << s << lit('*') << upper[hex] << "\r\n",
                                          checksum(s.begin(), s.end())))
     throw std::logic_error("Failed to marshal NMEA message");
 

@@ -35,9 +35,7 @@ namespace nmea {
 
 template <unsigned prec, typename T>
 struct FinitePrecisionPolicy : boost::spirit::karma::real_policies<T> {
-  static int floatfield(T) {
-    return boost::spirit::karma::real_policies<T>::fmtflags::fixed;
-  }
+  static int floatfield(T) { return boost::spirit::karma::real_policies<T>::fmtflags::fixed; }
   static unsigned precision(T) { return prec; }
 };
 
