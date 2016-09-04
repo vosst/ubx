@@ -54,8 +54,7 @@ nmea::Scanner::Expect nmea::Scanner::update(char c) {
 }
 
 std::string nmea::Scanner::finalize() {
-  if (state != Expect::nothing_more)
-    throw std::runtime_error{"Incomplete"};
+  if (state != Expect::nothing_more) throw std::runtime_error{"Incomplete"};
 
   auto result = ss.str();
   ss.str("");

@@ -3,10 +3,8 @@
 #include <iostream>
 
 std::shared_ptr<ubx::_8::ReplayingReceiver> ubx::_8::ReplayingReceiver::create(
-    const boost::filesystem::path& trace,
-    const std::shared_ptr<Monitor>& monitor) {
-  return std::shared_ptr<ReplayingReceiver>{
-      new ReplayingReceiver{trace, monitor}};
+    const boost::filesystem::path& trace, const std::shared_ptr<Monitor>& monitor) {
+  return std::shared_ptr<ReplayingReceiver>{new ReplayingReceiver{trace, monitor}};
 }
 
 void ubx::_8::ReplayingReceiver::run() {
@@ -19,11 +17,8 @@ void ubx::_8::ReplayingReceiver::run() {
   }
 }
 
-ubx::_8::ReplayingReceiver::ReplayingReceiver(
-    const boost::filesystem::path& trace,
-    const std::shared_ptr<Monitor>& monitor)
+ubx::_8::ReplayingReceiver::ReplayingReceiver(const boost::filesystem::path& trace,
+                                              const std::shared_ptr<Monitor>& monitor)
     : Receiver{monitor}, in{trace.string().c_str()} {
-  if (not in)
-    throw std::runtime_error{"Failed to open " + trace.string() +
-                             " for reading."};
+  if (not in) throw std::runtime_error{"Failed to open " + trace.string() + " for reading."};
 }

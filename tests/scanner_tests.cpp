@@ -17,9 +17,7 @@
 
 #include <gtest/gtest.h>
 
-TEST(NmeaScanner, ctor_and_dtor_work) {
-  ubx::_8::nmea::Scanner scanner;
-}
+TEST(NmeaScanner, ctor_and_dtor_work) { ubx::_8::nmea::Scanner scanner; }
 
 TEST(NmeaScanner, initial_state_is_wait_for_dollar) {
   ubx::_8::nmea::Scanner scanner;
@@ -28,12 +26,9 @@ TEST(NmeaScanner, initial_state_is_wait_for_dollar) {
 
 TEST(NmeaScanner, throws_if_finalized_for_incomplete_data) {
   EXPECT_ANY_THROW(ubx::_8::nmea::Scanner scanner; scanner.finalize(););
-  EXPECT_ANY_THROW(ubx::_8::nmea::Scanner scanner; scanner.update('$');
-                   scanner.finalize(););
-  EXPECT_ANY_THROW(ubx::_8::nmea::Scanner scanner; scanner.update('$');
-                   scanner.update('1'); scanner.finalize(););
-  EXPECT_ANY_THROW(ubx::_8::nmea::Scanner scanner; scanner.update('$');
-                   scanner.update('\r'); scanner.finalize(););
+  EXPECT_ANY_THROW(ubx::_8::nmea::Scanner scanner; scanner.update('$'); scanner.finalize(););
+  EXPECT_ANY_THROW(ubx::_8::nmea::Scanner scanner; scanner.update('$'); scanner.update('1'); scanner.finalize(););
+  EXPECT_ANY_THROW(ubx::_8::nmea::Scanner scanner; scanner.update('$'); scanner.update('\r'); scanner.finalize(););
 }
 
 TEST(NmeaScanner, returns_accumulated_data_when_finalized) {

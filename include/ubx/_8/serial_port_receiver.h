@@ -27,16 +27,12 @@ namespace _8 {
 
 /// @brief SerialPortReceiver connects to a ublox 8 GNSS receiver over a serial
 /// port.
-class SerialPortReceiver
-    : public Receiver,
-      public std::enable_shared_from_this<SerialPortReceiver> {
+class SerialPortReceiver : public Receiver, public std::enable_shared_from_this<SerialPortReceiver> {
  public:
   /// @brief create returns a new Receiver instance connected to the
   /// serial port reachable under dev.
-  static std::shared_ptr<SerialPortReceiver> create(
-      boost::asio::io_service& ios,
-      const boost::filesystem::path& dev,
-      const std::shared_ptr<Receiver::Monitor>& monitor);
+  static std::shared_ptr<SerialPortReceiver> create(boost::asio::io_service& ios, const boost::filesystem::path& dev,
+                                                    const std::shared_ptr<Receiver::Monitor>& monitor);
 
   void start();
   void stop();
@@ -46,8 +42,7 @@ class SerialPortReceiver
   /// located at path.
   ///
   /// Throws in case of issues.
-  SerialPortReceiver(boost::asio::io_service& ios,
-                     const boost::filesystem::path& dev,
+  SerialPortReceiver(boost::asio::io_service& ios, const boost::filesystem::path& dev,
                      const std::shared_ptr<Receiver::Monitor>& monitor);
 
   /// @brief finalize returns a finalized reader instance reading from

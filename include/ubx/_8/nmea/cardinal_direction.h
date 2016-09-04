@@ -20,12 +20,7 @@ namespace _8 {
 namespace nmea {
 /// @brief CardinalDirection enumerates the main cardinal direction
 /// available in NMEA sentences.
-enum class CardinalDirection {
-  north = 'N',
-  south = 'S',
-  east = 'E',
-  west = 'W'
-};
+enum class CardinalDirection { north = 'N', south = 'S', east = 'E', west = 'W' };
 }
 }
 }

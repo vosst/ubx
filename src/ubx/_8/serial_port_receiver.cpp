@@ -2,18 +2,13 @@
 
 #include <iostream>
 
-std::shared_ptr<ubx::_8::SerialPortReceiver>
-ubx::_8::SerialPortReceiver::create(boost::asio::io_service& ios,
-                                    const boost::filesystem::path& dev,
-                                    const std::shared_ptr<Monitor>& monitor) {
-  return std::shared_ptr<SerialPortReceiver>{
-      new SerialPortReceiver{ios, dev, monitor}};
+std::shared_ptr<ubx::_8::SerialPortReceiver> ubx::_8::SerialPortReceiver::create(
+    boost::asio::io_service& ios, const boost::filesystem::path& dev, const std::shared_ptr<Monitor>& monitor) {
+  return std::shared_ptr<SerialPortReceiver>{new SerialPortReceiver{ios, dev, monitor}};
 }
 
-ubx::_8::SerialPortReceiver::SerialPortReceiver(
-    boost::asio::io_service& ios,
-    const boost::filesystem::path& dev,
-    const std::shared_ptr<Monitor>& monitor)
+ubx::_8::SerialPortReceiver::SerialPortReceiver(boost::asio::io_service& ios, const boost::filesystem::path& dev,
+                                                const std::shared_ptr<Monitor>& monitor)
     : Receiver{monitor}, ios{ios}, sp{ios, dev.string().c_str()} {
   sp.set_option(boost::asio::serial_port::baud_rate(9600));
   ::tcflush(sp.lowest_layer().native_handle(), TCIOFLUSH);
@@ -21,14 +16,11 @@ ubx::_8::SerialPortReceiver::SerialPortReceiver(
 
 void ubx::_8::SerialPortReceiver::start() {
   auto thiz = shared_from_this();
-  boost::asio::async_read(
-      sp, boost::asio::buffer(&buffer.front(), buffer.size()),
-      [thiz, this](const boost::system::error_code&, std::size_t transferred) {
-        process_chunk(buffer.begin(), buffer.begin() + transferred);
-        start();
-      });
+  boost::asio::async_read(sp, boost::asio::buffer(&buffer.front(), buffer.size()),
+                          [thiz, this](const boost::system::error_code&, std::size_t transferred) {
+                            process_chunk(buffer.begin(), buffer.begin() + transferred);
+                            start();
+                          });
 }
 
-void ubx::_8::SerialPortReceiver::stop() {
-  sp.cancel();
-}
+void ubx::_8::SerialPortReceiver::stop() { sp.cancel(); }
