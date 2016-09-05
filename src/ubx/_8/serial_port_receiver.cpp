@@ -26,8 +26,13 @@ void ubx::_8::SerialPortReceiver::stop() { sp.cancel(); }
 void ubx::_8::SerialPortReceiver::start_read() {
   auto thiz = shared_from_this();
   boost::asio::async_read(sp, boost::asio::buffer(&buffer.front(), buffer.size()),
-                          [thiz, this](const boost::system::error_code&, std::size_t transferred) {
-                            process_chunk(buffer.begin(), buffer.begin() + transferred);
+                          [thiz, this](const boost::system::error_code& ec, std::size_t transferred) {
+                            if (ec == boost::asio::error::operation_aborted)
+                              return;
+
+                            if (not ec)
+                              process_chunk(buffer.begin(), buffer.begin() + transferred);
+
                             start_read();
                           });
 }
