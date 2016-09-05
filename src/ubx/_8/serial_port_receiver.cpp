@@ -1,6 +1,7 @@
 #include <ubx/_8/serial_port_receiver.h>
 
 #include <iostream>
+#include <system_error>
 
 std::shared_ptr<ubx::_8::SerialPortReceiver> ubx::_8::SerialPortReceiver::create(
     boost::asio::io_service& ios, const boost::filesystem::path& dev, const std::shared_ptr<Monitor>& monitor) {
