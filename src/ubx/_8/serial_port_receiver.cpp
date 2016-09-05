@@ -15,12 +15,19 @@ ubx::_8::SerialPortReceiver::SerialPortReceiver(boost::asio::io_service& ios, co
 }
 
 void ubx::_8::SerialPortReceiver::start() {
+  if (-1 == ::tcflush(sp.lowest_layer().native_handle(), TCIOFLUSH))
+    throw std::system_error(errno, std::system_category());
+
+  start_read();
+}
+
+void ubx::_8::SerialPortReceiver::stop() { sp.cancel(); }
+
+void ubx::_8::SerialPortReceiver::start_read() {
   auto thiz = shared_from_this();
   boost::asio::async_read(sp, boost::asio::buffer(&buffer.front(), buffer.size()),
                           [thiz, this](const boost::system::error_code&, std::size_t transferred) {
                             process_chunk(buffer.begin(), buffer.begin() + transferred);
-                            start();
+                            start_read();
                           });
 }
-
-void ubx::_8::SerialPortReceiver::stop() { sp.cancel(); }
