@@ -12,7 +12,6 @@ ubx::_8::SerialPortReceiver::SerialPortReceiver(boost::asio::io_service& ios, co
                                                 const std::shared_ptr<Monitor>& monitor)
     : Receiver{monitor}, ios{ios}, sp{ios, dev.string().c_str()} {
   sp.set_option(boost::asio::serial_port::baud_rate(9600));
-  ::tcflush(sp.lowest_layer().native_handle(), TCIOFLUSH);
 }
 
 void ubx::_8::SerialPortReceiver::start() {
